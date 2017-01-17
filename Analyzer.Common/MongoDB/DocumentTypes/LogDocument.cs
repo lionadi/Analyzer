@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyzer.Common.Logger
+namespace Analyzer.Common.MongoDB.DocumentTypes
 {
     [DataContract]
     public class LogItem

@@ -8,17 +8,25 @@ using Analyzer.Common.IO;
 
 namespace Analyzer.Common.Crawler
 {
+    /// <summary>
+    /// This is used to 
+    /// </summary>
     public class SourcesConfiguration
     {
         public static List<Source> GetConfiguredSources(String configurationFileAbsolutePath)
         {
-            List<Source> sources = new List<Source>();
-
-            if (!File.Exists(configurationFileAbsolutePath))
+            List<Source> sources = null;
+            try
             {
-                String fileContent = File.ReadAllText(configurationFileAbsolutePath);
+                if (!File.Exists(configurationFileAbsolutePath))
+                {
+                    String fileContent = File.ReadAllText(configurationFileAbsolutePath);
 
-                sources = (List<Source>)XMLObjectSerializer.ObjectToXML(fileContent, sources.GetType());
+                    sources = (List<Source>)XMLObjectSerializer.ObjectToXML(fileContent, new List<Source>().GetType());
+                }
+            } catch(Exception ex)
+            {
+                Logger.ExceptionLoggingService.Instance.WriteLog("Error in reading the configuration file: ", ex);
             }
 
             return sources;
@@ -34,13 +42,11 @@ namespace Analyzer.Common.Crawler
                 {
                     File.Delete(configurationFileAbsolutePath);
                 }
-                File.WriteAllText(path, createText);
-                String fileContent = File.ReadAllText(configurationFileAbsolutePath);
-
-                sources = (List<Source>)XMLObjectSerializer.ObjectToXML(fileContent, sources.GetType());
+                File.WriteAllText(configurationFileAbsolutePath, XMLObjectSerializer.GetXMLFromObject(configuredSources));
+                
             } catch(Exception ex)
             {
-
+                Logger.ExceptionLoggingService.Instance.WriteLog("Error in writing the configuration file: ", ex);
             }
 
             return operationStatus;
