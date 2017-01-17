@@ -24,6 +24,24 @@ namespace Analyzer.Common.Configuration
                 }
             }
 
+            public static int DatabaseWriteQueueSize
+            {
+                get
+                {
+                    int value = Analyzer.Common.Constants.Database.DefaultWriteQueueSize;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.DatabaseWriteQueueSize], out value) ? value : Analyzer.Common.Constants.Database.DefaultWriteQueueSize;
+                }
+            }
+
+            public static int MaxAnalyzerRuntimeHours
+            {
+                get
+                {
+                    int value = Analyzer.Common.Constants.Database.DefaultMaxAnalyzerRuntimeHours;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.MaxAnalyzerRuntimeHours], out value) ? value : Analyzer.Common.Constants.Database.DefaultMaxAnalyzerRuntimeHours;
+                }
+            }
+
             public static String MongoDBDatabaseName
             {
                 get

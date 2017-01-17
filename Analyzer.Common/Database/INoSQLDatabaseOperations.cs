@@ -10,5 +10,6 @@ namespace Analyzer.Common.Database
     {
         void AddToWriteQueue(String collectionName, object data);
         void AddToWriteQueue(SortedList<String, object> dataQueue);
+        int GetQueueSize();
     }
 }

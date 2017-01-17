@@ -30,42 +30,42 @@ namespace Analyzer.Common.Logger
         }
         // <!-- Singleton code
 
-        public void WriteLog(string message)
+        public async void WriteLog(string message)
         {
 
             //StringBuilder formattedMessage = new StringBuilder();
             //formattedMessage.AppendLine("Date: " + DateTime.Now.ToString());
             //formattedMessage.AppendLine("Message: " + message);
-            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Information });
+            var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Information });
 
             //_streamWriter.WriteLine(formattedMessage.ToString());
             //_streamWriter.Flush();
         }
 
-        public void WriteWarning(string message)
+        public async void WriteWarning(string message)
         {
-            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Warninig });
+            var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Warninig });
         }
 
-        public void WriteUnknownEvent(string message)
+        public async void WriteUnknownEvent(string message)
         {
-            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Unknown });
+            var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Unknown });
         }
 
-        public void WriteDBWriteOperation(string message)
+        public async void WriteDBWriteOperation(string message)
         {
-            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.WriteOperation });
+            var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.WriteOperation });
         }
 
-        public void WriteDBReadOperation(string message)
+        public async void WriteDBReadOperation(string message)
         {
-            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.ReadOperation });
+            var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.ReadOperation });
         }
 
-        public void WriteError(string message, Exception ex)
+        public async void WriteError(string message, Exception ex)
         {
             String msgInnerExAndStackTrace = String.Format("{0}; Inner Ex: {1}; Stack Trace: { 2}", ex.Message, ex.InnerException, ex.StackTrace);
-            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message + msgInnerExAndStackTrace, Type = Database.DataItems.LogType.Error });
+            var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message + msgInnerExAndStackTrace, Type = Database.DataItems.LogType.Error });
             //StringBuilder formattedMessage = new StringBuilder();
             //formattedMessage.AppendLine("Date: " + DateTime.Now.ToString());
             //formattedMessage.AppendLine("Message: " + message + msgInnerExAndStackTrace);

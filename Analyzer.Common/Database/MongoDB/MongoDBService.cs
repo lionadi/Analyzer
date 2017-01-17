@@ -60,26 +60,45 @@ namespace Analyzer.Common.Database.MongoDB
                 this.datawriteQueue.Add(data.Key, data.Value.ToBsonDocument());
         }
 
-        public void WriteToDatabase()
+        public async Task<bool> WriteToDatabaseAsync()
         {
-            var keys = this.datawriteQueue.Keys;
-            foreach(var key in keys)
+            bool databaseOperationStatus = false;
+            try
             {
-                var collection = this.database.GetCollection<BsonDocument>(key);
-                var documentsToInsert = from data in this.datawriteQueue where data.Key == key select data.Value;
+                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Starting to process queue at size: " + this.datawriteQueue.Count);
+                var keys = this.datawriteQueue.Keys;
+                int dataInsertionCount = 0;
+                foreach (var key in keys)
+                {
+                    var collection = this.database.GetCollection<BsonDocument>(key);
+                    var documentsToInsert = from data in this.datawriteQueue where data.Key == key select data.Value;
 
-                //this.datawriteQueue.Where( o => o.Key == key).
-                var result = collection.InsertManyAsync(documentsToInsert);
+                    await collection.InsertManyAsync(documentsToInsert);
 
+                    Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Data written successfully to database. Documents queue size was: " + documentsToInsert.Count() + " Updated collection was: " + key);
+                    dataInsertionCount += documentsToInsert.Count();
+                    Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Data processed: " + dataInsertionCount + "/" + this.datawriteQueue.Count);
+                }
 
+                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Queue was processed and written to the database. Clearing queue at size: " + this.datawriteQueue.Count);
+                this.datawriteQueue.Clear();
+                databaseOperationStatus = true;
+            } catch(Exception ex)
+            {
+                Logger.ExceptionLoggingService.Instance.WriteError("Error writing queue to database. Queue size: " + this.datawriteQueue.Count, ex);
             }
 
-
+            return databaseOperationStatus;
         }
 
         public bool CloseConnection()
         {
             throw new NotImplementedException("MongoDB Does not need to close connection. No need to use this function. Only interface implementation.");
+        }
+
+        public int GetQueueSize()
+        {
+            return this.datawriteQueue.Count;
         }
     }
 }
