@@ -59,12 +59,14 @@
   <ItemGroup>
     <Compile Include="Crawler\Source.cs" />
     <Compile Include="Crawler\SourcesConfiguration.cs" />
+    <Compile Include="Database\IDatabaseConnection.cs" />
+    <Compile Include="Database\MongoDB\MongoDBService.cs" />
     <Compile Include="IO\JSONObjectSerializer.cs" />
     <Compile Include="IO\XMLObjectSerializer.cs" />
     <Compile Include="Logger\ExceptionLoggingService.cs" />
-    <Compile Include="MongoDB\DocumentTypes\LogDocument.cs" />
-    <Compile Include="MongoDB\DatabaseService.cs" />
-    <Compile Include="MongoDB\DocumentTypes\WebDataDocument.cs" />
+    <Compile Include="Database\DataItems\Log.cs" />
+    <Compile Include="Database\DatabaseService.cs" />
+    <Compile Include="Database\DataItems\WebData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

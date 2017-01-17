@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyzer.Common.MongoDB.DocumentTypes
+namespace Analyzer.Common.Database.DataItems
 {
     [DataContract]
-    public class WebDataDocument
+    public class WebData
     {
         [DataMember]
         public String URL { get; set; }
