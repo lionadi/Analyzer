@@ -24,6 +24,23 @@ namespace Analyzer.Common.Database.MongoDB
             
         }
 
+        private bool DoesCollectionExist(String collectionName)
+        {
+            bool collectionExists = false;
+
+            foreach (var item in database.ListCollectionsAsync().Result.ToListAsync<BsonDocument>().Result)
+ {
+                var name = item.Elements.FirstOrDefault().Value.AsString;
+                if (name.Contains(collectionName))
+                {
+                    collectionExists = true;
+                    break;
+                }
+            }
+
+            return collectionExists;
+        }
+
         public static MongoDBService GetInstance(String serverAdress, String databaseName)
         {
             if (MongoDBService._operator == null)
@@ -70,6 +87,11 @@ namespace Analyzer.Common.Database.MongoDB
                 int dataInsertionCount = 0;
                 foreach (var key in keys)
                 {
+                    if(!this.DoesCollectionExist(key))
+                    {
+                        Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Collection does not exist in database. Creating collection: " + key);
+                        await this.database.CreateCollectionAsync(key);
+                    }
                     var collection = this.database.GetCollection<BsonDocument>(key);
                     var documentsToInsert = from data in this.datawriteQueue where data.Key == key select data.Value;
 
