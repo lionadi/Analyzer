@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Analyzer.Common.Database
 {
-    interface IDatabaseConnection
+    interface IDatabaseConnection : INoSQLDatabaseOperations
     {
         bool OpenConnection();
-        bool WriteToDatabase();
-        bool CloseConnection(); 
+        void WriteToDatabase();
+        bool CloseConnection();
+        
     }
 }

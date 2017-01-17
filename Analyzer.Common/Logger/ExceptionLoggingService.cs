@@ -25,29 +25,52 @@ namespace Analyzer.Common.Logger
         //private constructor
         private ExceptionLoggingService()
         {
-            _fileStream = File.OpenWrite(GetExecutionFolder() + "\\EasyAsFallingOffA.log");
-            _streamWriter = new StreamWriter(_fileStream);
+            //_fileStream = File.OpenWrite(GetExecutionFolder() + "\\EasyAsFallingOffA.log");
+            //_streamWriter = new StreamWriter(_fileStream);
         }
         // <!-- Singleton code
 
         public void WriteLog(string message)
         {
 
-            StringBuilder formattedMessage = new StringBuilder();
-            formattedMessage.AppendLine("Date: " + DateTime.Now.ToString());
-            formattedMessage.AppendLine("Message: " + message);
-            _streamWriter.WriteLine(formattedMessage.ToString());
-            _streamWriter.Flush();
+            //StringBuilder formattedMessage = new StringBuilder();
+            //formattedMessage.AppendLine("Date: " + DateTime.Now.ToString());
+            //formattedMessage.AppendLine("Message: " + message);
+            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Information });
+
+            //_streamWriter.WriteLine(formattedMessage.ToString());
+            //_streamWriter.Flush();
         }
 
-        public void WriteLog(string message, Exception ex)
+        public void WriteWarning(string message)
+        {
+            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Warninig });
+        }
+
+        public void WriteUnknownEvent(string message)
+        {
+            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.Unknown });
+        }
+
+        public void WriteDBWriteOperation(string message)
+        {
+            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.WriteOperation });
+        }
+
+        public void WriteDBReadOperation(string message)
+        {
+            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message, Type = Database.DataItems.LogType.ReadOperation });
+        }
+
+        public void WriteError(string message, Exception ex)
         {
             String msgInnerExAndStackTrace = String.Format("{0}; Inner Ex: {1}; Stack Trace: { 2}", ex.Message, ex.InnerException, ex.StackTrace);
-            StringBuilder formattedMessage = new StringBuilder();
-            formattedMessage.AppendLine("Date: " + DateTime.Now.ToString());
-            formattedMessage.AppendLine("Message: " + message + msgInnerExAndStackTrace);
-            _streamWriter.WriteLine(formattedMessage.ToString());
-            _streamWriter.Flush();
+            Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueue(Analyzer.Common.Constants.NoSQLDatabaseCollections.Logs, new Analyzer.Common.Database.DataItems.Log() { DateAndTimeOfEvent = DateTime.Now, Data = message + msgInnerExAndStackTrace, Type = Database.DataItems.LogType.Error });
+            //StringBuilder formattedMessage = new StringBuilder();
+            //formattedMessage.AppendLine("Date: " + DateTime.Now.ToString());
+            //formattedMessage.AppendLine("Message: " + message + msgInnerExAndStackTrace);
+            //_streamWriter.WriteLine(formattedMessage.ToString());
+            //_streamWriter.Flush();
         }
 
         

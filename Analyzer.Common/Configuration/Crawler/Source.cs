@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
 
-namespace Analyzer.Common.Crawler
+namespace Analyzer.Common.Configuration.Crawler
 {
     public enum SourceType
     {

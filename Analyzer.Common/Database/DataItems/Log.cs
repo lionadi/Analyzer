@@ -7,16 +7,26 @@ using System.Threading.Tasks;
 
 namespace Analyzer.Common.Database.DataItems
 {
+    public enum LogType
+    {
+        Unknown,
+        Information,
+        Warninig,
+        Error,
+        WriteOperation,
+        ReadOperation
+    }
+
     [DataContract]
     public class Log
     {
-        [DataMember]
-        public String Title { get; set; }
-
         [DataMember]
         public DateTime DateAndTimeOfEvent { get; set; }
 
         [DataMember]
         public String Data { get; set; }
+
+        [DataMember]
+        public LogType Type { get; set; }
     }
 }
