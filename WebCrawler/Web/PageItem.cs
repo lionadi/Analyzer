@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebCrawler.Web
+namespace Analyzer.WebCrawler.Web
 {
     [DataContract]
     public class PageItem
@@ -22,5 +22,9 @@ namespace WebCrawler.Web
         [DataMember]
         public String Content { get; set; }
 
+        public override string ToString()
+        {
+            return Content;
+        }
     }
 }

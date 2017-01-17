@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace WebCrawler.RSS
+namespace Analyzer.WebCrawler.RSS
 {
     [DataContract]
 

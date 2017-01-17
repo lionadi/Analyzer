@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WebCrawler.RSS;
+using Analyzer.WebCrawler.RSS;
 
 
 namespace Analyzer
@@ -28,6 +28,10 @@ namespace Analyzer
             //    this.tbResult.Text += title;
 
             var rssItems = RSSCrawler.ProcessRSSFeed(this.tbURL.Text, 60);
+            foreach (var rssItem in rssItems)
+            {
+                this.tbResult.Text += "\n" + Analyzer.WebCrawler.Web.WebCrawler.ProcessWordpressArticle(rssItem.Url).Result;
+            }
         }
     }
 }

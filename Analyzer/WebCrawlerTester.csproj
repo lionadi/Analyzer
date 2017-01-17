@@ -89,9 +89,9 @@
       <Project>{bb534ed4-5400-4da0-b88c-a00caf28840c}</Project>
       <Name>Analyzer.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebCrawler\WebCrawler.csproj">
+    <ProjectReference Include="..\WebCrawler\Analyzer.WebCrawler.csproj">
       <Project>{ebcfe714-41c6-4eab-a7ab-5650f06bd73c}</Project>
-      <Name>WebCrawler</Name>
+      <Name>Analyzer.WebCrawler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

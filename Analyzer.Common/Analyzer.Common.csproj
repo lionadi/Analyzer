@@ -41,7 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crawler\Source.cs" />
+    <Compile Include="Crawler\SourcesConfiguration.cs" />
     <Compile Include="IO\JSONObjectSerializer.cs" />
+    <Compile Include="IO\XMLObjectSerializer.cs" />
+    <Compile Include="Logger\ExceptionLoggingService.cs" />
+    <Compile Include="Logger\LogItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

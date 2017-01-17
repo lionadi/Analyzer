@@ -7,8 +7,8 @@
     <ProjectGuid>{EBCFE714-41C6-4EAB-A7AB-5650F06BD73C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebCrawler</RootNamespace>
-    <AssemblyName>WebCrawler</AssemblyName>
+    <RootNamespace>Analyzer.WebCrawler</RootNamespace>
+    <AssemblyName>Analyzer.WebCrawler</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

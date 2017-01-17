@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
 
-namespace WebCrawler.RSS
+namespace Analyzer.WebCrawler.RSS
 {
     public class RSSCrawler
     {
