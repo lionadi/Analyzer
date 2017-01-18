@@ -8,8 +8,8 @@ namespace Analyzer.Common.Database
 {
     interface INoSQLDatabaseOperations
     {
-        void AddToWriteQueue(String collectionName, object data);
-        void AddToWriteQueue(SortedList<String, object> dataQueue);
+        void AddToWriteQueue<T>(String collectionName, T data);
+        void AddToWriteQueue<T>(SortedList<String, T> dataQueue);
         int GetQueueSize();
     }
 }

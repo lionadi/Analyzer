@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using Analyzer.Common.Configuration.Crawler;
 
 namespace Analyzer.WebCrawler.RSS
 {
@@ -24,6 +25,9 @@ namespace Analyzer.WebCrawler.RSS
 
         [DataMember]
         public int NumComments { get; set; }
+
+        [DataMember]
+        public SourceType SourceType { get; set; }
 
     }
 }

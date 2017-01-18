@@ -50,7 +50,8 @@ namespace Analyzer.WebCrawler.RSS
                 
             } catch(Exception ex)
             {
-                throw new Exception("Error in processing given RSS Feed: " + rssFeedURL, ex);
+                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("Error in processing given RSS Feed: " + rssFeedURL, ex);
+                itemsList = null;
             }
 
             return itemsList;
@@ -96,7 +97,8 @@ namespace Analyzer.WebCrawler.RSS
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in processing given RSS Feed: " + rssFeedURL, ex);
+                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("Error in processing given RSS Feed: " + rssFeedURL, ex);
+                itemsList = null;
             }
 
             return itemsList;
@@ -142,7 +144,8 @@ namespace Analyzer.WebCrawler.RSS
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in processing given RSS Feed: " + rssFeedURL, ex);
+                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("Error in processing given RSS Feed: " + rssFeedURL, ex);
+                itemsList = null;
             }
 
             return itemsList;

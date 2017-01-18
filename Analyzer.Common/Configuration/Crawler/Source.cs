@@ -27,6 +27,9 @@ namespace Analyzer.Common.Configuration.Crawler
     public class Source
     {
         [DataMember]
+        public String Title { get; set; }
+
+        [DataMember]
         public String URL { get; set; }
 
         [DataMember]

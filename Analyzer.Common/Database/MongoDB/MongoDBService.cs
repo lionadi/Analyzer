@@ -21,7 +21,7 @@ namespace Analyzer.Common.Database.MongoDB
         {
             this.serverAddress = serverAddress;
             this.databaseName = databaseName;
-            
+            this.OpenConnection();
         }
 
         private bool DoesCollectionExist(String collectionName)
@@ -29,7 +29,7 @@ namespace Analyzer.Common.Database.MongoDB
             bool collectionExists = false;
 
             foreach (var item in database.ListCollectionsAsync().Result.ToListAsync<BsonDocument>().Result)
- {
+            { 
                 var name = item.Elements.FirstOrDefault().Value.AsString;
                 if (name.Contains(collectionName))
                 {
@@ -49,7 +49,7 @@ namespace Analyzer.Common.Database.MongoDB
             return MongoDBService._operator;
         }
 
-        public bool OpenConnection()
+        public void OpenConnection()
         {
             try
             {
@@ -60,18 +60,24 @@ namespace Analyzer.Common.Database.MongoDB
             } catch(Exception ex)
             {
                 Logger.ExceptionLoggingService.Instance.WriteError("Error opening DB connection to address: " + this.serverAddress + "and database: " + this.databaseName, ex);
-                return false;
+                this.mongoDBClient = null;
+                this.database = null;
+                //return false;
             }
 
-            return true;
+            if (this.mongoDBClient == null || this.database == null)
+                throw new Exception("ERROR: Failed to establish MongoDB connection. Check your configurations!");
+
+
+            //return true;
         }
 
-        public void AddToWriteQueue(String collectionName, object data)
+        public void AddToWriteQueue<T>(String collectionName, T data)
         {
             this.datawriteQueue.Add(collectionName, data.ToBsonDocument());
         }
 
-        public void AddToWriteQueue(SortedList<String, object> dataQueue)
+        public void AddToWriteQueue<T>(SortedList<String, T> dataQueue)
         {
             foreach(var data in dataQueue)
                 this.datawriteQueue.Add(data.Key, data.Value.ToBsonDocument());

@@ -15,6 +15,9 @@ namespace Analyzer.Common
             public static String MongoDBDatabaseName = "MongoDBDatabaseName";
             public static String DatabaseWriteQueueSize = "DatabaseWriteQueueSize";
             public static String MaxAnalyzerRuntimeHours = "MaxAnalyzerRuntimeHours";
+            public static String WebScrapingConfigurationFileLocation = "WebScrapingConfigurationFileLocation";
+            public static String RSSFeedHistoryRangeForScrapingInDays = "RSSFeedHistoryRangeForScrapingInDays";
+            public static String WebScrapingTimeIntervalsInMinutes = "WebScrapingTimeIntervalsInMinutes";
             
         }
 
@@ -28,6 +31,8 @@ namespace Analyzer.Common
         {
             public static int DefaultWriteQueueSize= 10;
             public static int DefaultMaxAnalyzerRuntimeHours = 0;
+            public static int DefaultRSSFeedHistoryRangeForScrapingInDays = 60;
+            public static int DefaultWebScrapingTimeIntervalsInMinutes = 60;
         }
     }
 }

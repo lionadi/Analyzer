@@ -14,7 +14,8 @@ namespace Analyzer.Common.Database.DataItems
         Warninig,
         Error,
         WriteOperation,
-        ReadOperation
+        ReadOperation,
+        WebScraping
     }
 
     [DataContract]

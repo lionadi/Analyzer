@@ -11,8 +11,14 @@ namespace Analyzer.Common.Database.DataItems
     public class WebData
     {
         [DataMember]
+        public string Title { get; set; }
+
+        [DataMember]
+        public DateTime Published { get; set; }
+
+        [DataMember]
         public String URL { get; set; }
         [DataMember]
-        public String Data { get; set; }
+        public String Content { get; set; }
     }
 }

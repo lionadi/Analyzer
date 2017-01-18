@@ -57,6 +57,34 @@ namespace Analyzer.Common.Configuration
                     return System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.MongoDBServerAddress];
                 }
             }
+
+            public static String WebScrapingConfigurationFileLocation
+            {
+                get
+                {
+                    return System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.WebScrapingConfigurationFileLocation];
+                }
+            }
+
+            public static int RSSFeedHistoryRangeForScrapingInDays
+            {
+                get
+                {
+                    int value = Analyzer.Common.Constants.Database.DefaultRSSFeedHistoryRangeForScrapingInDays;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.RSSFeedHistoryRangeForScrapingInDays], out value) ? value : Analyzer.Common.Constants.Database.DefaultMaxAnalyzerRuntimeHours;
+                }
+            }
+
+            public static int WebScrapingTimeIntervalsInMinutes
+            {
+                get
+                {
+                    int value = Analyzer.Common.Constants.Database.DefaultWebScrapingTimeIntervalsInMinutes;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.WebScrapingTimeIntervalsInMinutes], out value) ? value : Analyzer.Common.Constants.Database.DefaultMaxAnalyzerRuntimeHours;
+                }
+            }
+
+            
         }
 
         public static List<T> GetConfiguredSources<T>(String configurationFileAbsolutePath)

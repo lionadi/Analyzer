@@ -42,6 +42,7 @@ namespace AnalyzerConfiguratorApplication
                 foreach (var source in this.webSources)
                 {
                     int index = this.dgwWebSourcesConfigs.Rows.Add();
+                    this.dgwWebSourcesConfigs.Rows[index].Cells["Title"].Value = source.Title;
                     this.dgwWebSourcesConfigs.Rows[index].Cells["URL"].Value = source.URL;
                     this.dgwWebSourcesConfigs.Rows[index].Cells["CrawlerType"].Value = source.CrawlerType.ToString();
                     this.dgwWebSourcesConfigs.Rows[index].Cells["CssSelector"].Value = source.CssSelector;
@@ -65,6 +66,7 @@ namespace AnalyzerConfiguratorApplication
                     {
                         this.webSources.Add(new Analyzer.Common.Configuration.Crawler.Source()
                         {
+                            Title = (String)row.Cells["Title"].Value,
                             URL = (String)row.Cells["URL"].Value,
                             CssSelector = (String)row.Cells["CssSelector"].Value,
                             CrawlerType = (CrawlerType)Enum.Parse(Analyzer.Common.Configuration.Crawler.CrawlerType.RSS.GetType(), (string)row.Cells["CrawlerType"].Value),

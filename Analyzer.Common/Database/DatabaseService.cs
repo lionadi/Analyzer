@@ -16,9 +16,14 @@ namespace Analyzer.Common.Database
         public DatabaseService()
         {
             if (Analyzer.Common.Configuration.ConfigurationManager.AppSettings.MongoDBSerice)
-                this.databaseConnection = new MongoDB.MongoDBService(Analyzer.Common.Configuration.ConfigurationManager.AppSettings.MongoDBServerAddress, Analyzer.Common.Configuration.ConfigurationManager.AppSettings.MongoDBDatabaseName);
+                this.databaseConnection = MongoDB.MongoDBService.GetInstance(Analyzer.Common.Configuration.ConfigurationManager.AppSettings.MongoDBServerAddress, Analyzer.Common.Configuration.ConfigurationManager.AppSettings.MongoDBDatabaseName);
 
             this.MaxQueueSize = Analyzer.Common.Configuration.ConfigurationManager.AppSettings.DatabaseWriteQueueSize;
+        }
+
+        public void LogDatabaseServiceConfigurations()
+        {
+
         }
 
         public static DatabaseService GetInstance()
@@ -29,7 +34,7 @@ namespace Analyzer.Common.Database
             return DatabaseService._operator;
         }
 
-        public async Task<bool> AddtoWriteQueueAsync(String collectionName, object data)
+        public async Task<bool> AddtoWriteQueueAsync<T>(String collectionName, T data)
         {
             this.databaseConnection.AddToWriteQueue(collectionName, data);
 
@@ -39,7 +44,7 @@ namespace Analyzer.Common.Database
             return true;
         }
 
-        public async Task<bool> AddtoWriteQueueAsync(SortedList<String, object> dataQueue)
+        public async Task<bool> AddtoWriteQueueAsync<T>(SortedList<String, T> dataQueue)
         {
             this.databaseConnection.AddToWriteQueue(dataQueue);
 

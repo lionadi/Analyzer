@@ -11,6 +11,36 @@ namespace Analyzer.WebCrawler.Web
 {
     public class WebCrawler
     {
+        /// <summary>
+        /// Use this to get the whole page content
+        /// </summary>
+        /// <param name="pageURL"></param>
+        /// <returns></returns>
+        public static PageItem ProcessWebPage(String pageURL)
+        {
+            PageItem pageItem = null;
+            try
+            {
+                // Setup the configuration to support document loading
+                var config = Configuration.Default.WithDefaultLoader();
+                // Load the names of all The Big Bang Theory episodes from Wikipedia
+                using (WebClient client = new WebClient())
+                {
+                    string webLocationContent = client.DownloadString(pageURL);
+                    pageItem.Content = Analyzer.Common.HtmlRemoval.StripTagsCharArray(webLocationContent);
+                    pageItem.Url = pageURL;
+                }
+            }
+            catch (Exception ex)
+            {
+                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("Error in processing given wen URL: " + pageURL, ex);
+                pageItem = null;
+            }
+
+
+            return pageItem;
+        }
+
         public static PageItem ProcessWebPage(String pageURL, String cssSelector)
         {
             PageItem pageItem = null;
@@ -37,14 +67,15 @@ namespace Analyzer.WebCrawler.Web
                         foreach (var pageContentElement in pageContent)
                             sb.AppendLine(pageContentElement);
 
-                        pageItem.Content = sb.ToString();
+                        pageItem.Content = Analyzer.Common.HtmlRemoval.StripTagsCharArray(sb.ToString());
                         pageItem.Url = pageURL;
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in processing given wen URL: " + pageURL, ex);
+                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("Error in processing given wen URL: " + pageURL, ex);
+                pageItem = null;
             }
 
 
@@ -82,13 +113,14 @@ namespace Analyzer.WebCrawler.Web
 
 
                         pageItem.Title = title.First().TextContent;
-                        pageItem.Content = content.First().TextContent;
+                        pageItem.Content = Analyzer.Common.HtmlRemoval.StripTagsCharArray(content.First().TextContent);
                         pageItem.Url = pageURL;
                     }
                 }
             } catch(Exception ex)
             {
-                throw new Exception("Error in processing given wen URL: " + pageURL, ex);
+                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("Error in processing given wen URL: " + pageURL, ex);
+                pageItem = null;
             }
             
 

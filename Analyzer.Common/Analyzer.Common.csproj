@@ -64,6 +64,8 @@
     <Compile Include="Database\IDatabaseConnection.cs" />
     <Compile Include="Database\INoSQLDatabaseOperations.cs" />
     <Compile Include="Database\MongoDB\MongoDBService.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="HTMLRemoval.cs" />
     <Compile Include="IO\JSONObjectSerializer.cs" />
     <Compile Include="IO\XMLObjectSerializer.cs" />
     <Compile Include="Logger\ExceptionLoggingService.cs" />

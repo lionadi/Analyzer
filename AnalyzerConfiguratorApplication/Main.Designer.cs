@@ -32,10 +32,11 @@
             this.tbConfigurationFileLocation = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dgwWebSourcesConfigs = new System.Windows.Forms.DataGridView();
-            this.bLoadConfigurations = new System.Windows.Forms.Button();
             this.bSaveConfigurations = new System.Windows.Forms.Button();
+            this.bLoadConfigurations = new System.Windows.Forms.Button();
+            this.dgwWebSourcesConfigs = new System.Windows.Forms.DataGridView();
             this.sourceBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CssSelector = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SourceType = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -74,19 +75,15 @@
             this.panel1.Size = new System.Drawing.Size(639, 54);
             this.panel1.TabIndex = 3;
             // 
-            // dgwWebSourcesConfigs
+            // bSaveConfigurations
             // 
-            this.dgwWebSourcesConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwWebSourcesConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.URL,
-            this.CssSelector,
-            this.SourceType,
-            this.CrawlerType});
-            this.dgwWebSourcesConfigs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgwWebSourcesConfigs.Location = new System.Drawing.Point(0, 54);
-            this.dgwWebSourcesConfigs.Name = "dgwWebSourcesConfigs";
-            this.dgwWebSourcesConfigs.Size = new System.Drawing.Size(639, 502);
-            this.dgwWebSourcesConfigs.TabIndex = 4;
+            this.bSaveConfigurations.Location = new System.Drawing.Point(552, 25);
+            this.bSaveConfigurations.Name = "bSaveConfigurations";
+            this.bSaveConfigurations.Size = new System.Drawing.Size(75, 23);
+            this.bSaveConfigurations.TabIndex = 4;
+            this.bSaveConfigurations.Text = "Save";
+            this.bSaveConfigurations.UseVisualStyleBackColor = true;
+            this.bSaveConfigurations.Click += new System.EventHandler(this.bSaveConfigurations_Click);
             // 
             // bLoadConfigurations
             // 
@@ -98,19 +95,29 @@
             this.bLoadConfigurations.UseVisualStyleBackColor = true;
             this.bLoadConfigurations.Click += new System.EventHandler(this.bLoadConfigurations_Click);
             // 
-            // bSaveConfigurations
+            // dgwWebSourcesConfigs
             // 
-            this.bSaveConfigurations.Location = new System.Drawing.Point(552, 25);
-            this.bSaveConfigurations.Name = "bSaveConfigurations";
-            this.bSaveConfigurations.Size = new System.Drawing.Size(75, 23);
-            this.bSaveConfigurations.TabIndex = 4;
-            this.bSaveConfigurations.Text = "Save";
-            this.bSaveConfigurations.UseVisualStyleBackColor = true;
-            this.bSaveConfigurations.Click += new System.EventHandler(this.bSaveConfigurations_Click);
+            this.dgwWebSourcesConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwWebSourcesConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Title,
+            this.URL,
+            this.CssSelector,
+            this.SourceType,
+            this.CrawlerType});
+            this.dgwWebSourcesConfigs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgwWebSourcesConfigs.Location = new System.Drawing.Point(0, 54);
+            this.dgwWebSourcesConfigs.Name = "dgwWebSourcesConfigs";
+            this.dgwWebSourcesConfigs.Size = new System.Drawing.Size(639, 502);
+            this.dgwWebSourcesConfigs.TabIndex = 4;
             // 
             // sourceBindingSource
             // 
             this.sourceBindingSource.DataSource = typeof(Analyzer.Common.Configuration.Crawler.Source);
+            // 
+            // Title
+            // 
+            this.Title.HeaderText = "Title";
+            this.Title.Name = "Title";
             // 
             // URL
             // 
@@ -168,6 +175,7 @@
         private System.Windows.Forms.DataGridView dgwWebSourcesConfigs;
         private System.Windows.Forms.Button bSaveConfigurations;
         private System.Windows.Forms.Button bLoadConfigurations;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn CssSelector;
         private System.Windows.Forms.DataGridViewComboBoxColumn SourceType;
