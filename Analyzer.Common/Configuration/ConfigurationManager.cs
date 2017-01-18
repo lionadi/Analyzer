@@ -59,16 +59,16 @@ namespace Analyzer.Common.Configuration
             }
         }
 
-        public static List<object> GetConfiguredSources(String configurationFileAbsolutePath)
+        public static List<T> GetConfiguredSources<T>(String configurationFileAbsolutePath)
         {
-            List<object> sources = null;
+            List<T> sources = null;
             try
             {
-                if (!File.Exists(configurationFileAbsolutePath))
+                if (File.Exists(configurationFileAbsolutePath))
                 {
                     String fileContent = File.ReadAllText(configurationFileAbsolutePath);
 
-                    sources = (List<object>)XMLObjectSerializer.ObjectToXML(fileContent, new List<object>().GetType());
+                    sources = (List<T>)XMLObjectSerializer.ObjectToXML(fileContent, new List<T>().GetType());
                 }
             } catch(Exception ex)
             {
@@ -78,7 +78,7 @@ namespace Analyzer.Common.Configuration
             return sources;
         }
 
-        public static bool WriteConfiguredSources(List<object> configuredSources, String configurationFileAbsolutePath)
+        public static bool WriteConfiguredSources<T>(List<T> configuredSources, String configurationFileAbsolutePath)
         {
             bool operationStatus = false;
 

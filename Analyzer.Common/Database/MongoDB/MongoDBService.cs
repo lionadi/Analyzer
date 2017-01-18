@@ -82,7 +82,7 @@ namespace Analyzer.Common.Database.MongoDB
             bool databaseOperationStatus = false;
             try
             {
-                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Starting to process queue at size: " + this.datawriteQueue.Count);
+                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Starting to process queue at queue size: " + this.datawriteQueue.Count);
                 var keys = this.datawriteQueue.Keys;
                 int dataInsertionCount = 0;
                 foreach (var key in keys)
