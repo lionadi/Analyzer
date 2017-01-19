@@ -71,7 +71,7 @@ namespace Analyzer.Common.Configuration
                 get
                 {
                     int value = Analyzer.Common.Constants.Database.DefaultRSSFeedHistoryRangeForScrapingInDays;
-                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.RSSFeedHistoryRangeForScrapingInDays], out value) ? value : Analyzer.Common.Constants.Database.DefaultMaxAnalyzerRuntimeHours;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.RSSFeedHistoryRangeForScrapingInDays], out value) ? value : Analyzer.Common.Constants.Database.DefaultRSSFeedHistoryRangeForScrapingInDays;
                 }
             }
 
@@ -80,11 +80,27 @@ namespace Analyzer.Common.Configuration
                 get
                 {
                     int value = Analyzer.Common.Constants.Database.DefaultWebScrapingTimeIntervalsInMinutes;
-                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.WebScrapingTimeIntervalsInMinutes], out value) ? value : Analyzer.Common.Constants.Database.DefaultMaxAnalyzerRuntimeHours;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.WebScrapingTimeIntervalsInMinutes], out value) ? value : Analyzer.Common.Constants.Database.DefaultWebScrapingTimeIntervalsInMinutes;
                 }
             }
 
-            
+            public static int RSSFeedReaderWaitTimeInMilliseconds
+            {
+                get
+                {
+                    int value = Analyzer.Common.Constants.Database.DefaultRSSFeedReaderWaitTimeInMilliseconds;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.RSSFeedReaderWaitTimeInMilliseconds], out value) ? value : Analyzer.Common.Constants.Database.DefaultRSSFeedReaderWaitTimeInMilliseconds;
+                }
+            }
+
+            public static int WebDataReaderWaitTimeInMilliseconds
+            {
+                get
+                {
+                    int value = Analyzer.Common.Constants.Database.DefaultWebDataReaderWaitTimeInMilliseconds;
+                    return Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.WebDataReaderWaitTimeInMilliseconds], out value) ? value : Analyzer.Common.Constants.Database.DefaultWebDataReaderWaitTimeInMilliseconds;
+                }
+            }
         }
 
         public static List<T> GetConfiguredSources<T>(String configurationFileAbsolutePath)

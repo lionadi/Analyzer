@@ -18,7 +18,10 @@ namespace Analyzer.Common
             public static String WebScrapingConfigurationFileLocation = "WebScrapingConfigurationFileLocation";
             public static String RSSFeedHistoryRangeForScrapingInDays = "RSSFeedHistoryRangeForScrapingInDays";
             public static String WebScrapingTimeIntervalsInMinutes = "WebScrapingTimeIntervalsInMinutes";
-            
+            public static String RSSFeedReaderWaitTimeInMilliseconds = "WebScrapingTimeIntervalsInMinutes";
+            public static String WebDataReaderWaitTimeInMilliseconds = "WebScrapingTimeIntervalsInMinutes";
+
+
         }
 
         public static class NoSQLDatabaseCollections
@@ -33,6 +36,8 @@ namespace Analyzer.Common
             public static int DefaultMaxAnalyzerRuntimeHours = 0;
             public static int DefaultRSSFeedHistoryRangeForScrapingInDays = 60;
             public static int DefaultWebScrapingTimeIntervalsInMinutes = 60;
+            public static int DefaultRSSFeedReaderWaitTimeInMilliseconds = 3000;
+            public static int DefaultWebDataReaderWaitTimeInMilliseconds = 3000;
         }
     }
 }

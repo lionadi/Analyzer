@@ -157,9 +157,11 @@ namespace Analyzer.WebCrawler
                 }
 
                 rssFeed.LastRunTime = DateTime.Now;
+                // avoid being banned or causing harm to the scraped site, being nice :)
+                System.Threading.Thread.Sleep(Analyzer.Common.Configuration.ConfigurationManager.AppSettings.RSSFeedReaderWaitTimeInMilliseconds);
             }
 
-            // Shuftle the location to get a randomized processing queue, helps making a more clear and reliable code
+            // Shuftle the location to get a randomized processing queue, helps making a more clear and reliable code and avoid being banned or causing harm to the scraped site
             rssFeedsWebLocationsToProcess.Shuffle();
             // Process the web location queue
             foreach (var rssItem in rssFeedsWebLocationsToProcess)
@@ -223,6 +225,9 @@ namespace Analyzer.WebCrawler
                     Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("WARNING: Unable to process web location: " + rssItem.Url);
                     this.itemsFailedCounter++;
                 }
+
+                // avoid being banned or causing harm to the scraped site, being nice :)
+                System.Threading.Thread.Sleep(Analyzer.Common.Configuration.ConfigurationManager.AppSettings.WebDataReaderWaitTimeInMilliseconds);
             }
             Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("ENDED: RSS Feed scraping iteration started at: " + DateTime.Now);
         }
