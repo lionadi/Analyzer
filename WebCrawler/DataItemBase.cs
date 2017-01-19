@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analyzer.Common.Database.DataItems
+namespace Analyzer.WebCrawler
 {
     [DataContract]
-    public class WebData : DataItem
+    public class DataItemBase
     {
         [DataMember]
         public string Title { get; set; }
@@ -17,10 +17,7 @@ namespace Analyzer.Common.Database.DataItems
         public DateTime Published { get; set; }
 
         [DataMember]
-        public String URL { get; set; }
-
-        [DataMember]
-        public String Content { get; set; }
+        public string Url { get; set; }
 
         [DataMember]
         public String Category { get; set; }

@@ -9,17 +9,8 @@ using Analyzer.Common.Database.DataItems;
 namespace Analyzer.WebCrawler.Web
 {
     [DataContract]
-    public class PageItem
+    public class PageItem : Analyzer.WebCrawler.DataItemBase
     {
-        [DataMember]
-        public string Title { get; set; }
-
-        [DataMember]
-        public DateTime Published { get; set; }
-
-        [DataMember]
-        public string Url { get; set; }
-
         [DataMember]
         public String Content { get; set; }
 
@@ -36,6 +27,7 @@ namespace Analyzer.WebCrawler.Web
             webData.URL = this.Url;
             webData.Published = this.Published;
             webData.Title = this.Title;
+            webData.Category = this.Category;
 
             return webData;
         }

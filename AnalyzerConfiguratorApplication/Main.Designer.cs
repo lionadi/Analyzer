@@ -37,6 +37,7 @@
             this.dgwWebSourcesConfigs = new System.Windows.Forms.DataGridView();
             this.sourceBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LastRunTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CssSelector = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -73,7 +74,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(639, 54);
+            this.panel1.Size = new System.Drawing.Size(854, 54);
             this.panel1.TabIndex = 3;
             // 
             // bSaveConfigurations
@@ -101,6 +102,7 @@
             this.dgwWebSourcesConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgwWebSourcesConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title,
+            this.Category,
             this.LastRunTime,
             this.URL,
             this.CssSelector,
@@ -109,7 +111,7 @@
             this.dgwWebSourcesConfigs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgwWebSourcesConfigs.Location = new System.Drawing.Point(0, 54);
             this.dgwWebSourcesConfigs.Name = "dgwWebSourcesConfigs";
-            this.dgwWebSourcesConfigs.Size = new System.Drawing.Size(639, 502);
+            this.dgwWebSourcesConfigs.Size = new System.Drawing.Size(854, 514);
             this.dgwWebSourcesConfigs.TabIndex = 4;
             // 
             // sourceBindingSource
@@ -120,6 +122,11 @@
             // 
             this.Title.HeaderText = "Title";
             this.Title.Name = "Title";
+            // 
+            // Category
+            // 
+            this.Category.HeaderText = "Category";
+            this.Category.Name = "Category";
             // 
             // LastRunTime
             // 
@@ -160,7 +167,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 556);
+            this.ClientSize = new System.Drawing.Size(854, 568);
             this.Controls.Add(this.dgwWebSourcesConfigs);
             this.Controls.Add(this.panel1);
             this.Name = "Main";
@@ -184,6 +191,7 @@
         private System.Windows.Forms.Button bSaveConfigurations;
         private System.Windows.Forms.Button bLoadConfigurations;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
         private System.Windows.Forms.DataGridViewTextBoxColumn LastRunTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn CssSelector;

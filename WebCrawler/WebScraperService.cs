@@ -146,6 +146,7 @@ namespace Analyzer.WebCrawler
                             continue;
 
                         rssItem.SourceType = rssFeed.SourceType;
+                        rssItem.Category = rssFeed.Category;
                         //rssItem.ProcessingTimeLimit = rssFeed.LastRunTime;
                         rssFeedsWebLocationsToProcess.Add(rssItem);
                     }
@@ -205,7 +206,8 @@ namespace Analyzer.WebCrawler
                 
                 if (webLocationData != null)
                 {
-                    
+                    webLocationData.Category = rssItem.Category;
+                    webLocationData.Published = rssItem.Published;
                     var result = Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync<Analyzer.Common.Database.DataItems.WebData>(rssItem.SourceType.ToString(), webLocationData.ToWebData());
                     if (!result)
                     {

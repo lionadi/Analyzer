@@ -36,6 +36,9 @@ namespace Analyzer.Common.Configuration.Crawler
         public String CssSelector { get; set; }
 
         [DataMember]
+        public String Category { get; set; }
+
+        [DataMember]
         public SourceType SourceType { get; set; }
 
         [DataMember]

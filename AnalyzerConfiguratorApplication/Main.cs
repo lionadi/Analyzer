@@ -48,6 +48,7 @@ namespace AnalyzerConfiguratorApplication
                     this.dgwWebSourcesConfigs.Rows[index].Cells["CssSelector"].Value = source.CssSelector;
                     this.dgwWebSourcesConfigs.Rows[index].Cells["SourceType"].Value = source.SourceType.ToString();
                     this.dgwWebSourcesConfigs.Rows[index].Cells["LastRunTime"].Value = source.LastRunTime.ToString();
+                    this.dgwWebSourcesConfigs.Rows[index].Cells["Category"].Value = source.Category;
                     
                 }
             }
@@ -70,6 +71,7 @@ namespace AnalyzerConfiguratorApplication
                         {
                             Title = (String)row.Cells["Title"].Value,
                             URL = (String)row.Cells["URL"].Value,
+                            Category = (String)row.Cells["Category"].Value,
                             CssSelector = (String)row.Cells["CssSelector"].Value,
                             CrawlerType = (CrawlerType)Enum.Parse(Analyzer.Common.Configuration.Crawler.CrawlerType.RSS.GetType(), (string)row.Cells["CrawlerType"].Value),
                             SourceType = (SourceType)Enum.Parse(Analyzer.Common.Configuration.Crawler.SourceType.Common.GetType(), (string)row.Cells["SourceType"].Value)
