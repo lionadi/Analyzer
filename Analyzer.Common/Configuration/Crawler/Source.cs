@@ -40,5 +40,8 @@ namespace Analyzer.Common.Configuration.Crawler
 
         [DataMember]
         public CrawlerType CrawlerType { get; set; }
+
+        [DataMember]
+        public DateTime LastRunTime { get; set; }
     }
 }

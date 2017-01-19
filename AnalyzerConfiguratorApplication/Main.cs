@@ -47,6 +47,8 @@ namespace AnalyzerConfiguratorApplication
                     this.dgwWebSourcesConfigs.Rows[index].Cells["CrawlerType"].Value = source.CrawlerType.ToString();
                     this.dgwWebSourcesConfigs.Rows[index].Cells["CssSelector"].Value = source.CssSelector;
                     this.dgwWebSourcesConfigs.Rows[index].Cells["SourceType"].Value = source.SourceType.ToString();
+                    this.dgwWebSourcesConfigs.Rows[index].Cells["LastRunTime"].Value = source.LastRunTime.ToString();
+                    
                 }
             }
         }

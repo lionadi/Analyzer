@@ -35,6 +35,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblRuntime = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblItemsProcessed = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblItemsFailed = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // bStartService
@@ -62,7 +66,7 @@
             this.lblServiceStatus.AutoSize = true;
             this.lblServiceStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblServiceStatus.ForeColor = System.Drawing.Color.DarkOrange;
-            this.lblServiceStatus.Location = new System.Drawing.Point(81, 66);
+            this.lblServiceStatus.Location = new System.Drawing.Point(81, 18);
             this.lblServiceStatus.Name = "lblServiceStatus";
             this.lblServiceStatus.Size = new System.Drawing.Size(289, 76);
             this.lblServiceStatus.TabIndex = 2;
@@ -89,6 +93,7 @@
             this.lblRuntime.Size = new System.Drawing.Size(43, 46);
             this.lblRuntime.TabIndex = 4;
             this.lblRuntime.Text = "0";
+            this.lblRuntime.TextChanged += new System.EventHandler(this.lblRuntime_TextChanged);
             // 
             // timer1
             // 
@@ -96,11 +101,59 @@
             this.timer1.Interval = 60000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.DarkTurquoise;
+            this.label2.Location = new System.Drawing.Point(20, 138);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Items processed:";
+            // 
+            // lblItemsProcessed
+            // 
+            this.lblItemsProcessed.AutoSize = true;
+            this.lblItemsProcessed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemsProcessed.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblItemsProcessed.Location = new System.Drawing.Point(256, 138);
+            this.lblItemsProcessed.Name = "lblItemsProcessed";
+            this.lblItemsProcessed.Size = new System.Drawing.Size(14, 13);
+            this.lblItemsProcessed.TabIndex = 6;
+            this.lblItemsProcessed.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DarkCyan;
+            this.label3.Location = new System.Drawing.Point(20, 160);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Items failed:";
+            // 
+            // lblItemsFailed
+            // 
+            this.lblItemsFailed.AutoSize = true;
+            this.lblItemsFailed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemsFailed.ForeColor = System.Drawing.Color.LimeGreen;
+            this.lblItemsFailed.Location = new System.Drawing.Point(256, 160);
+            this.lblItemsFailed.Name = "lblItemsFailed";
+            this.lblItemsFailed.Size = new System.Drawing.Size(14, 13);
+            this.lblItemsFailed.TabIndex = 8;
+            this.lblItemsFailed.Text = "0";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(444, 302);
+            this.Controls.Add(this.lblItemsFailed);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblItemsProcessed);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblRuntime);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblServiceStatus);
@@ -121,6 +174,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblRuntime;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblItemsProcessed;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblItemsFailed;
     }
 }
 

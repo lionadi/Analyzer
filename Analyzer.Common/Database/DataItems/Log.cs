@@ -19,7 +19,7 @@ namespace Analyzer.Common.Database.DataItems
     }
 
     [DataContract]
-    public class Log
+    public class Log : DataItem
     {
         [DataMember]
         public DateTime DateAndTimeOfEvent { get; set; }
@@ -28,6 +28,6 @@ namespace Analyzer.Common.Database.DataItems
         public String Data { get; set; }
 
         [DataMember]
-        public LogType Type { get; set; }
+        public String Type { get; set; }
     }
 }

@@ -61,6 +61,7 @@
     <Compile Include="Configuration\Crawler\Source.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Database\DataItems\DataItem.cs" />
     <Compile Include="Database\IDatabaseConnection.cs" />
     <Compile Include="Database\INoSQLDatabaseOperations.cs" />
     <Compile Include="Database\MongoDB\MongoDBService.cs" />

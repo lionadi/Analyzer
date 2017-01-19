@@ -48,5 +48,11 @@ namespace AnalyzerServiceApplication
             runtimeOfServiceInMinutes += 1;
             this.lblRuntime.Text = runtimeOfServiceInMinutes.ToString();
         }
+
+        private void lblRuntime_TextChanged(object sender, EventArgs e)
+        {
+            this.lblItemsProcessed.Text = this.webScraperService.ItemsProcessedCounter.ToString();
+            this.lblItemsFailed.Text = this.webScraperService.ItemsFailedCounter.ToString();
+        }
     }
 }

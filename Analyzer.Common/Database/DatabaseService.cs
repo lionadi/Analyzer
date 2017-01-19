@@ -34,24 +34,32 @@ namespace Analyzer.Common.Database
             return DatabaseService._operator;
         }
 
-        public async Task<bool> AddtoWriteQueueAsync<T>(String collectionName, T data)
+        public bool AddtoWriteQueueAsync<T>(String collectionName, T data)
         {
             this.databaseConnection.AddToWriteQueue(collectionName, data);
 
             if (this.databaseConnection.GetQueueSize() >= this.MaxQueueSize)
-                return await this.databaseConnection.WriteToDatabaseAsync();
+                return this.databaseConnection.WriteToDatabaseAsync();
 
             return true;
         }
 
-        public async Task<bool> AddtoWriteQueueAsync<T>(SortedList<String, T> dataQueue)
+        public bool AddtoWriteQueueAsync<T>(SortedList<String, T> dataQueue)
         {
             this.databaseConnection.AddToWriteQueue(dataQueue);
 
             if (this.databaseConnection.GetQueueSize() >= this.MaxQueueSize)
-                return await this.databaseConnection.WriteToDatabaseAsync();
+                return this.databaseConnection.WriteToDatabaseAsync();
 
             return true;
+        }
+
+        /// <summary>
+        /// Writes the remaining queued data into the database
+        /// </summary>
+        public bool Flush()
+        {
+            return this.databaseConnection.WriteToDatabaseAsync();
         }
 
         //public void AddToWriteQueue()

@@ -26,6 +26,7 @@ namespace Analyzer.WebCrawler.Web
                 // Load the names of all The Big Bang Theory episodes from Wikipedia
                 using (WebClient client = new WebClient())
                 {
+                    pageItem = new PageItem();
                     string webLocationContent = client.DownloadString(pageURL);
                     pageItem.Content = Analyzer.Common.HtmlRemoval.StripTagsCharArray(webLocationContent);
                     pageItem.Url = pageURL;

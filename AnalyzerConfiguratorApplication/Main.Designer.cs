@@ -37,6 +37,7 @@
             this.dgwWebSourcesConfigs = new System.Windows.Forms.DataGridView();
             this.sourceBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastRunTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CssSelector = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SourceType = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -100,6 +101,7 @@
             this.dgwWebSourcesConfigs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgwWebSourcesConfigs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title,
+            this.LastRunTime,
             this.URL,
             this.CssSelector,
             this.SourceType,
@@ -118,6 +120,12 @@
             // 
             this.Title.HeaderText = "Title";
             this.Title.Name = "Title";
+            // 
+            // LastRunTime
+            // 
+            this.LastRunTime.HeaderText = "LastRunTime";
+            this.LastRunTime.Name = "LastRunTime";
+            this.LastRunTime.ReadOnly = true;
             // 
             // URL
             // 
@@ -176,6 +184,7 @@
         private System.Windows.Forms.Button bSaveConfigurations;
         private System.Windows.Forms.Button bLoadConfigurations;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastRunTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
         private System.Windows.Forms.DataGridViewTextBoxColumn CssSelector;
         private System.Windows.Forms.DataGridViewComboBoxColumn SourceType;

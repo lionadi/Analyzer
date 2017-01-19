@@ -16,7 +16,7 @@ namespace Analyzer.WebCrawler
     {
         public WebScraperService()
         {
-            this.scrapingIntervals = new Timer(ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes);
+            this.scrapingIntervals = new Timer(ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * 60000);
             this.scrapingIntervals.Elapsed += ScrapingIntervals_Elapsed;
             this.scrapingIntervals.AutoReset = true;
         }
@@ -33,6 +33,25 @@ namespace Analyzer.WebCrawler
         private bool isServiceScraping = false;
         List<Source> webSources = new List<Source>();
         Timer scrapingIntervals = null;
+
+        private int itemsProcessedCounter = 0;
+        public int ItemsProcessedCounter
+        {
+            get
+            {
+                return itemsProcessedCounter;
+            }
+        }
+
+        private int itemsFailedCounter = 0;
+        public int ItemsFailedCounter
+        {
+            get
+            {
+                return itemsProcessedCounter;
+            }
+        }
+
         public void StartScraping(DateTime startTime)
         {
             this.isServiceScraping = true;
@@ -41,16 +60,19 @@ namespace Analyzer.WebCrawler
             this.webSources = Analyzer.Common.Configuration.ConfigurationManager.GetConfiguredSources<Source>(ConfigurationManager.AppSettings.WebScrapingConfigurationFileLocation);
             // Start the timer
             this.scrapingIntervals.Enabled = true;
+            this.itemsProcessedCounter = 0;
         }
     
 
         public void StopScraping(DateTime startTime, DateTime endTime, int runtimeInMinutes)
         {
+            this.scrapingIntervals.Enabled = false;
+            this.scrapingIntervals.Stop();
             this.isServiceScraping = false;
             Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("Web Scraping service stop requested. Start time: " + startTime + " End Time: " + endTime + " Runtime in minutes: " + runtimeInMinutes);
-            this.scrapingIntervals.Enabled = false;
+            Analyzer.Common.Database.DatabaseService.GetInstance().Flush();
         }
-        public bool IisServiceScraping
+        public bool IsServiceScraping
         {
             get
             {
@@ -65,22 +87,17 @@ namespace Analyzer.WebCrawler
         {
             try
             {
-
-
+                // Stop the timer until the current scraping iteration has finnished. No need to overlapp
+                this.scrapingIntervals.Enabled = false;
                 // Processing web pages based on RSS feeds
                 //-------------------------------------------------------
 
                 Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("START: web scraping iteration started at: " + DateTime.Now);
 
-                // Stop the timer until the current scraping iteration has finnished. No need to overlapp
-                this.scrapingIntervals.Enabled = false;
-
                 this.RSSFeedScraperOperator();
 
-
-                // Start the timer to wait for the next iteration
-                this.scrapingIntervals.Enabled = true;
-
+                // Write the configuration file again, this is store when was the last time the scraping was performed. Any items that is older than the date it was processed is not going to be processed again.
+                Analyzer.Common.Configuration.ConfigurationManager.WriteConfiguredSources<Source>(this.webSources, ConfigurationManager.AppSettings.WebScrapingConfigurationFileLocation);
                 Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("END: web scraping iteration ended at: " + DateTime.Now);
 
                 //-------------------------------------------------------
@@ -89,10 +106,16 @@ namespace Analyzer.WebCrawler
                 this.scrapingIntervals.Enabled = false;
                 this.isServiceScraping = false;
                 Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteError("ERROR: Scraping high level failure. Stopping scraping at: " + DateTime.Now, ex);
+                Analyzer.Common.Database.DatabaseService.GetInstance().Flush();
+            }
+            finally
+            {
+                // Start the timer to wait for the next iteration
+                this.scrapingIntervals.Enabled = true;
             }
         }
 
-        private async void RSSFeedScraperOperator()
+        private void RSSFeedScraperOperator()
         {
             Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("START: RSS Feed scraping iteration started at: " + DateTime.Now);
             // this is a web location scraping queue. Use this to randomly select locations from the scraping queue to avoid being pinned as a denial of service attack.
@@ -118,7 +141,12 @@ namespace Analyzer.WebCrawler
                         if (!this.isServiceScraping)
                             break;
 
+                        // Skip this item if it has been processed earlier
+                        if (rssItem.Published <= rssFeed.LastRunTime)
+                            continue;
+
                         rssItem.SourceType = rssFeed.SourceType;
+                        //rssItem.ProcessingTimeLimit = rssFeed.LastRunTime;
                         rssFeedsWebLocationsToProcess.Add(rssItem);
                     }
                 }
@@ -126,6 +154,8 @@ namespace Analyzer.WebCrawler
                 {
                     Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("WARNING: Unable to process rss feed: " + rssFeed.URL);
                 }
+
+                rssFeed.LastRunTime = DateTime.Now;
             }
 
             // Shuftle the location to get a randomized processing queue, helps making a more clear and reliable code
@@ -136,6 +166,10 @@ namespace Analyzer.WebCrawler
                 // Check to see if the scraping is to be stopped
                 if (!this.isServiceScraping)
                     break;
+
+                // Skip this item if it has been processed earlier
+                //if (rssItem.Published <= rssItem.ProcessingTimeLimit)
+                //    continue;
 
                 PageItem webLocationData = null;
 
@@ -148,12 +182,12 @@ namespace Analyzer.WebCrawler
 
                     case SourceType.Facebook:
                         {
-                            
+                            throw new NotImplementedException();
                         } break;
 
                     case SourceType.Twitter:
                         {
-
+                            throw new NotImplementedException();
                         }
                         break;
 
@@ -171,15 +205,21 @@ namespace Analyzer.WebCrawler
                 
                 if (webLocationData != null)
                 {
-                    var result = await Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync<Analyzer.Common.Database.DataItems.WebData>(rssItem.SourceType.ToString(), webLocationData.ToWebData());
+                    
+                    var result = Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync<Analyzer.Common.Database.DataItems.WebData>(rssItem.SourceType.ToString(), webLocationData.ToWebData());
                     if (!result)
                     {
                         Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("WARNING: Unable to add the web location to the database queue: " + rssItem.Url);
+                        this.itemsFailedCounter++;
+                    } else
+                    {
+                        this.itemsProcessedCounter++;
                     }
                 }
                 else
                 {
                     Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("WARNING: Unable to process web location: " + rssItem.Url);
+                    this.itemsFailedCounter++;
                 }
             }
             Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("ENDED: RSS Feed scraping iteration started at: " + DateTime.Now);

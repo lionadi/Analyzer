@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Analyzer.Common.Database.DataItems
 {
     [DataContract]
-    public class WebData
+    public class WebData : DataItem
     {
         [DataMember]
         public string Title { get; set; }

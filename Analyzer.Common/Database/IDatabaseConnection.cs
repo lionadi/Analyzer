@@ -9,7 +9,7 @@ namespace Analyzer.Common.Database
     interface IDatabaseConnection : INoSQLDatabaseOperations
     {
         void OpenConnection();
-        Task<bool> WriteToDatabaseAsync();
+        bool WriteToDatabaseAsync();
         bool CloseConnection();
         
     }
