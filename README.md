@@ -1,4 +1,3 @@
-# Analyzer
 Project World Analysis
 
 Contents
@@ -18,7 +17,9 @@ Solution Architecture	6
 C# Web Scraper	6
 Database	7
 Web scraping	7
+Ways to respect the site and its users when scraping to void causing harm to the user experience or the service	7
 Logging	7
+Configurations	7
 
 
 Installation
@@ -115,7 +116,16 @@ This will be a multithreaded operation that reads web URLs, scrapers the data an
 The application keeps track of how many items it has processed. You can start and stop the scraping. For each scraping source, there is a time stamp when the source was last time processed. This functionality is so that the same data is not read twice into the database.
 Web Pages scraping work in such a way that preferably there is a RSS feed that is read. From the feed items are retrieved based on how many days old they are. If they are new enough they are processed.
 Web sources are edited with a Windows application that saves to the HDD the configurations to be read by the web scraper “service”.
+Ways to respect the site and its users when scraping to void causing harm to the user experience or the service
+For this solution, the code uses these methods:
+•	Pausing between requests of content
+•	Making a greater list of sources and shuffling them. This way the same site is not necessarily one after the other
+•	Using compression automatically if available to minimize traffic
+•	The ability to time how often sites are scraped, once a day, once a week, month etc
+•	The ability to read content from RSS Feeds and also to be able to define time ranges
+•	The randomly define scraping intervals with the following equation: min interval + random number of the interval value between 0 and max interval value.
+
 Logging
 All “main” functionalities and operations are logged into the MongoDB database in a single collection.
 
-
+Configurations
