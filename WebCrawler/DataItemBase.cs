@@ -21,5 +21,8 @@ namespace Analyzer.WebCrawler
 
         [DataMember]
         public String Category { get; set; }
+
+        [DataMember]
+        public String Content { get; set; }
     }
 }

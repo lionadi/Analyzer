@@ -160,6 +160,7 @@
             this.CrawlerType.HeaderText = "CrawlerType";
             this.CrawlerType.Items.AddRange(new object[] {
             "RSS",
+            "RSSContentNoLinkFollowUp",
             "Web"});
             this.CrawlerType.Name = "CrawlerType";
             // 

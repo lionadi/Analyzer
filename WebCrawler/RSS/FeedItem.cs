@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using Analyzer.Common.Configuration.Crawler;
+using Analyzer.Common.Database.DataItems;
 
 namespace Analyzer.WebCrawler.RSS
 {
@@ -24,6 +25,17 @@ namespace Analyzer.WebCrawler.RSS
         /// </summary>
         //[DataMember]
         //public DateTime ProcessingTimeLimit { get; set; }
+        public WebData ToWebData()
+        {
+            WebData webData = new WebData();
 
+            webData.Content = this.Content;
+            webData.URL = this.Url;
+            webData.Published = this.Published;
+            webData.Title = this.Title;
+            webData.Category = this.Category;
+
+            return webData;
+        }
     }
 }

@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GZipWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Configuration\Crawler\Source.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Constants.cs" />

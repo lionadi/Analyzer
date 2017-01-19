@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AngleSharp;
 using System.Net;
 using AngleSharp.Parser.Html;
+using Analyzer.Common;
 
 namespace Analyzer.WebCrawler.Web
 {
@@ -24,8 +25,9 @@ namespace Analyzer.WebCrawler.Web
                 // Setup the configuration to support document loading
                 var config = Configuration.Default.WithDefaultLoader();
                 // Load the names of all The Big Bang Theory episodes from Wikipedia
-                using (WebClient client = new WebClient())
+                using (GZipWebClient client = new GZipWebClient())
                 {
+                    client.Headers.Add("user-agent", Analyzer.Common.Configuration.ConfigurationManager.AppSettings.UserAgentOptions.GetRandom());
                     pageItem = new PageItem();
                     string webLocationContent = client.DownloadString(pageURL);
                     pageItem.Content = Analyzer.Common.HtmlRemoval.StripTagsCharArray(webLocationContent);
@@ -50,8 +52,9 @@ namespace Analyzer.WebCrawler.Web
                 // Setup the configuration to support document loading
                 var config = Configuration.Default.WithDefaultLoader();
                 // Load the names of all The Big Bang Theory episodes from Wikipedia
-                using (WebClient client = new WebClient())
+                using (GZipWebClient client = new GZipWebClient())
                 {
+                    client.Headers.Add("user-agent", Analyzer.Common.Configuration.ConfigurationManager.AppSettings.UserAgentOptions.GetRandom());
                     string webLocationContent = client.DownloadString(pageURL);
                     var parser = new HtmlParser();
                     var document = parser.Parse(webLocationContent);
@@ -96,8 +99,9 @@ namespace Analyzer.WebCrawler.Web
                 // Load the names of all The Big Bang Theory episodes from Wikipedia
                 var address = pageURL;
 
-                using (WebClient client = new WebClient())
+                using (GZipWebClient client = new GZipWebClient())
                 {
+                    client.Headers.Add("user-agent", Analyzer.Common.Configuration.ConfigurationManager.AppSettings.UserAgentOptions.GetRandom());
                     string webLocationContent = client.DownloadString(pageURL);
                     var parser = new HtmlParser();
                     var document = parser.Parse(webLocationContent);

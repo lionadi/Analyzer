@@ -11,8 +11,7 @@ namespace Analyzer.WebCrawler.Web
     [DataContract]
     public class PageItem : Analyzer.WebCrawler.DataItemBase
     {
-        [DataMember]
-        public String Content { get; set; }
+        
 
         public override string ToString()
         {

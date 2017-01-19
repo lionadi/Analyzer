@@ -18,8 +18,10 @@ namespace Analyzer.Common
             public static String WebScrapingConfigurationFileLocation = "WebScrapingConfigurationFileLocation";
             public static String RSSFeedHistoryRangeForScrapingInDays = "RSSFeedHistoryRangeForScrapingInDays";
             public static String WebScrapingTimeIntervalsInMinutes = "WebScrapingTimeIntervalsInMinutes";
-            public static String RSSFeedReaderWaitTimeInMilliseconds = "WebScrapingTimeIntervalsInMinutes";
-            public static String WebDataReaderWaitTimeInMilliseconds = "WebScrapingTimeIntervalsInMinutes";
+            public static String RSSFeedReaderWaitTimeInMilliseconds = "RSSFeedReaderWaitTimeInMilliseconds";
+            public static String WebDataReaderWaitTimeInMilliseconds = "WebDataReaderWaitTimeInMilliseconds";
+            public static String UserAgentOptions = "UserAgentOptions";
+            
 
 
         }

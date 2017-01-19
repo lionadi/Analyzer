@@ -66,6 +66,18 @@ namespace Analyzer.Common.Configuration
                 }
             }
 
+            private static List<String> _userAgentOptions;
+            public static List<String> UserAgentOptions
+            {
+                get
+                {
+                    _userAgentOptions = System.Configuration.ConfigurationManager.AppSettings[Analyzer.Common.Constants.AppSettingsKeys.UserAgentOptions].ToString().Split('#').ToList();
+                    return _userAgentOptions;
+                }
+            }
+
+            
+
             public static int RSSFeedHistoryRangeForScrapingInDays
             {
                 get

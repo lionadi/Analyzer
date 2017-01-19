@@ -27,6 +27,23 @@ namespace Analyzer.Common
             }
         }
 
+        public static T GetRandom<T>(this IList<T> list)
+        {
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            int n = list.Count;
+            while (n > 1)
+            {
+                byte[] box = new byte[1];
+                do provider.GetBytes(box);
+                while (!(box[0] < n * (Byte.MaxValue / n)));
+                int k = (box[0] % n);
+                n--;
+                return list[k];
+            }
+
+            return list.FirstOrDefault();
+        }
+
         //public static void AddToInner<T, Y>(this IDictionary<T, IList<Y>> dict, T key, Y value)
         //{
         //    IList<Y> values;

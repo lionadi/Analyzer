@@ -25,12 +25,15 @@ namespace Analyzer.WebCrawler.RSS
                             select new
 
                             {
-
                                 Title = rssItem.Element("title").Value,
 
                                 Published = DateTime.Parse(rssItem.Element("pubDate").Value),
 
-                                Url = rssItem.Element("link").Value
+                                Url = rssItem.Element("link").Value,
+
+                                //Content = rssItem.Element("content:encoded").Value,
+
+                                Description = rssItem.Element("description").Value
 
                             };
 
@@ -42,7 +45,7 @@ namespace Analyzer.WebCrawler.RSS
 
                 foreach (var item in newPosts)
                 {
-                    itemsList.Add(new FeedItem { Title = item.Title, Published = item.Published, Url = item.Url });
+                    itemsList.Add(new FeedItem { Title = item.Title, Published = item.Published, Url = item.Url, Content = item.Description });
                 }
 
                 
@@ -76,7 +79,8 @@ namespace Analyzer.WebCrawler.RSS
 
                                 Published = DateTime.Parse(rssItem.Element("pubDate").Value),
 
-                                Url = rssItem.Element("link").Value
+                                Url = rssItem.Element("link").Value,
+                                Description = rssItem.Element("description").Value
 
                             };
 
@@ -88,7 +92,7 @@ namespace Analyzer.WebCrawler.RSS
 
                 foreach (var item in newPosts)
                 {
-                    itemsList.Add(new FeedItem { Title = item.Title, Published = item.Published, Url = item.Url });
+                    itemsList.Add(new FeedItem { Title = item.Title, Published = item.Published, Url = item.Url, Content = item.Description });
                 }
 
 
@@ -123,7 +127,8 @@ namespace Analyzer.WebCrawler.RSS
 
                                 Published = DateTime.Parse(rssItem.Element("pubDate").Value),
 
-                                Url = rssItem.Element("link").Value
+                                Url = rssItem.Element("link").Value,
+                                Description = rssItem.Element("description").Value
 
                             };
 
@@ -135,7 +140,7 @@ namespace Analyzer.WebCrawler.RSS
 
                 foreach (var item in newPosts)
                 {
-                    itemsList.Add(new FeedItem { Title = item.Title, Published = item.Published, Url = item.Url });
+                    itemsList.Add(new FeedItem { Title = item.Title, Published = item.Published, Url = item.Url, Content = item.Description });
                 }
 
 

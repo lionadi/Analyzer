@@ -14,9 +14,12 @@ namespace Analyzer.WebCrawler
 {
     public class WebScraperService
     {
+        private Random rndGenerator = new Random();
+        private int timerIntervalMultiplier = 60000;
         public WebScraperService()
         {
-            this.scrapingIntervals = new Timer(ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * 60000);
+
+            this.scrapingIntervals = new Timer((ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * timerIntervalMultiplier) + (rndGenerator.Next(0, (ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * timerIntervalMultiplier))));
             this.scrapingIntervals.Elapsed += ScrapingIntervals_Elapsed;
             this.scrapingIntervals.AutoReset = true;
         }
@@ -25,6 +28,9 @@ namespace Analyzer.WebCrawler
         {
             // Run this as long as the timer intervals hit and as long as the hasn't been a request to stop the scraping
             this.ScraperOperator();
+
+            // Change the scraping interval to avoid causing alarms on the site and not get banned
+            this.scrapingIntervals.Interval = (ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * timerIntervalMultiplier) + (rndGenerator.Next(0, (ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * timerIntervalMultiplier)));
         }
 
         /// <summary>
@@ -124,7 +130,7 @@ namespace Analyzer.WebCrawler
             // NOTICE: This might not work if you are using a web service, this is presently designed for web URLs
             List<RSS.FeedItem> rssFeedsWebLocationsToProcess = new List<RSS.FeedItem>();
 
-            var rssFeeds = this.webSources.Where(o => o.CrawlerType == CrawlerType.RSS);
+            var rssFeeds = this.webSources.Where(o => o.CrawlerType == CrawlerType.RSS || o.CrawlerType == CrawlerType.RSSContentNoLinkFollowUp);
 
             foreach (var rssFeed in rssFeeds)
             {
@@ -148,7 +154,26 @@ namespace Analyzer.WebCrawler
                         rssItem.SourceType = rssFeed.SourceType;
                         rssItem.Category = rssFeed.Category;
                         //rssItem.ProcessingTimeLimit = rssFeed.LastRunTime;
-                        rssFeedsWebLocationsToProcess.Add(rssItem);
+
+                        // Check to see if only the RSS feed data is to be saved and not the actual data behing the feed item
+                        if (rssFeed.CrawlerType == CrawlerType.RSSContentNoLinkFollowUp)
+                        {
+                            var result = Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync<Analyzer.Common.Database.DataItems.WebData>(rssItem.SourceType.ToString(), rssItem.ToWebData());
+                            if (!result)
+                            {
+                                Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("WARNING: Unable to add the rss item to the database queue: " + rssItem.Url + " from feed: " + rssFeed.URL);
+                                this.itemsFailedCounter++;
+                            }
+                            else
+                            {
+                                this.itemsProcessedCounter++;
+                            }
+                        }
+                        else
+                        {
+                            // Add the RSS item to be processed as a normal web page, follow the RSS item link
+                            rssFeedsWebLocationsToProcess.Add(rssItem);
+                        }
                     }
                 }
                 else

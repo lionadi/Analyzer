@@ -20,6 +20,7 @@ namespace Analyzer.Common.Configuration.Crawler
     public enum CrawlerType
     {
         RSS,
+        RSSContentNoLinkFollowUp,
         Web
     }
 
