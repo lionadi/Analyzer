@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
+using Analyzer.Common;
 
 namespace Analyzer.WebCrawler.RSS
 {
@@ -27,7 +28,7 @@ namespace Analyzer.WebCrawler.RSS
                             {
                                 Title = rssItem.Element("title").Value,
 
-                                Published = DateTime.Parse(rssItem.Element("pubDate").Value),
+                                Published = rssItem.Element("pubDate").Value.ParseDateTime(),
 
                                 Url = rssItem.Element("link").Value,
 
@@ -77,7 +78,7 @@ namespace Analyzer.WebCrawler.RSS
 
                                 Title = rssItem.Element("title").Value,
 
-                                Published = DateTime.Parse(rssItem.Element("pubDate").Value),
+                                Published = rssItem.Element("pubDate").Value.ParseDateTime(),
 
                                 Url = rssItem.Element("link").Value,
                                 Description = rssItem.Element("description").Value
@@ -125,7 +126,7 @@ namespace Analyzer.WebCrawler.RSS
 
                                 Title = rssItem.Element("title").Value,
 
-                                Published = DateTime.Parse(rssItem.Element("pubDate").Value),
+                                Published = rssItem.Element("pubDate").Value.ParseDateTime(),
 
                                 Url = rssItem.Element("link").Value,
                                 Description = rssItem.Element("description").Value

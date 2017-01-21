@@ -152,7 +152,8 @@
             "WordPress",
             "Facebook",
             "Twitter",
-            "Yahoo"});
+            "Yahoo",
+            "ScienceDaily"});
             this.SourceType.Name = "SourceType";
             // 
             // CrawlerType

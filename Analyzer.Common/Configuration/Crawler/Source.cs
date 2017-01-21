@@ -14,7 +14,8 @@ namespace Analyzer.Common.Configuration.Crawler
         WordPress,
         Facebook,
         Twitter,
-        Yahoo
+        Yahoo,
+        ScienceDaily
     }
 
     public enum CrawlerType

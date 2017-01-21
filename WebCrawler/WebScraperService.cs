@@ -19,7 +19,14 @@ namespace Analyzer.WebCrawler
         public WebScraperService()
         {
 
+#if DEBUG
+            this.timerIntervalMultiplier = 60;
+#endif 
+
             this.scrapingIntervals = new Timer((ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * timerIntervalMultiplier) + (rndGenerator.Next(0, (ConfigurationManager.AppSettings.WebScrapingTimeIntervalsInMinutes * timerIntervalMultiplier))));
+
+
+
             this.scrapingIntervals.Elapsed += ScrapingIntervals_Elapsed;
             this.scrapingIntervals.AutoReset = true;
         }
@@ -225,6 +232,11 @@ namespace Analyzer.WebCrawler
                         }
                         break;
 
+                    case SourceType.ScienceDaily:
+                        {
+                            webLocationData = Analyzer.WebCrawler.Web.WebCrawler.ProcessWebPage(rssItem.Url, "#story_text");
+                        } break;
+
                     default:
                         {
                             webLocationData = Analyzer.WebCrawler.Web.WebCrawler.ProcessWebPage(rssItem.Url);
@@ -235,6 +247,8 @@ namespace Analyzer.WebCrawler
                 {
                     webLocationData.Category = rssItem.Category;
                     webLocationData.Published = rssItem.Published;
+                    if (String.IsNullOrEmpty(webLocationData.Title))
+                        webLocationData.Title = rssItem.Title;
                     var result = Analyzer.Common.Database.DatabaseService.GetInstance().AddtoWriteQueueAsync<Analyzer.Common.Database.DataItems.WebData>(rssItem.SourceType.ToString(), webLocationData.ToWebData());
                     if (!result)
                     {
