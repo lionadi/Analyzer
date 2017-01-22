@@ -21,6 +21,11 @@ namespace Analyzer.Common.Database.DataItems
     [DataContract]
     public class Log : DataItem
     {
+        public void DataItem()
+        {
+            this.LogEntryDate = DateTime.Now;
+        }
+
         [DataMember]
         public DateTime DateAndTimeOfEvent { get; set; }
 
@@ -29,5 +34,8 @@ namespace Analyzer.Common.Database.DataItems
 
         [DataMember]
         public String Type { get; set; }
+
+        [DataMember]
+        public DateTime LogEntryDate { get; set; }
     }
 }
