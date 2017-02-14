@@ -34,32 +34,31 @@ namespace Analyzer.Common.Database
             return DatabaseService._operator;
         }
 
-        public bool AddtoWriteQueueAsync<T>(String collectionName, T data)
+        public Task<bool> AddtoWriteQueueAsync<T>(String collectionName, T data)
         {
-            this.databaseConnection.AddToWriteQueue(collectionName, data);
-
-            if (this.databaseConnection.GetQueueSize() >= this.MaxQueueSize)
-                return this.databaseConnection.WriteToDatabaseAsync();
-
-            return true;
+            return Task.Factory.StartNew(() => this.databaseConnection.AddToWriteQueue(collectionName, data)).ContinueWith(task => {
+                if (databaseConnection.GetQueueSize() >= MaxQueueSize)
+                    return databaseConnection.WriteToDatabase();
+                return task.Result;
+            });
         }
 
-        public bool AddtoWriteQueueAsync<T>(SortedList<String, T> dataQueue)
+        public Task<bool> AddtoWriteQueueAsync<T>(SortedList<String, T> dataQueue)
         {
-            this.databaseConnection.AddToWriteQueue(dataQueue);
-
-            if (this.databaseConnection.GetQueueSize() >= this.MaxQueueSize)
-                return this.databaseConnection.WriteToDatabaseAsync();
-
-            return true;
+            
+                return Task.Factory.StartNew(() => this.databaseConnection.AddToWriteQueue(dataQueue)).ContinueWith( task => {
+                    if (databaseConnection.GetQueueSize() >= MaxQueueSize)
+                        return databaseConnection.WriteToDatabase();
+                    return task.Result;
+                });
         }
 
         /// <summary>
         /// Writes the remaining queued data into the database
         /// </summary>
-        public bool Flush()
+        public Task<bool> Flush()
         {
-            return this.databaseConnection.WriteToDatabaseAsync();
+            return Task.Factory.StartNew(() => this.databaseConnection.WriteToDatabase());
         }
 
         //public void AddToWriteQueue()

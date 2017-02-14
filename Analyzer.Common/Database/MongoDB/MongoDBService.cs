@@ -35,7 +35,7 @@ namespace Analyzer.Common.Database.MongoDB
         /// <summary>
         /// When the database write operation is envoked the queue is emptied and the items are transfered here. While this holds data no other write operations are to be performed. New Items should go to the queue to wait for their turn again.
         /// </summary>
-        private System.Collections.Generic.Dictionary<String, List<BsonDocument>> processingQueue;
+        //private System.Collections.Generic.Dictionary<String, List<BsonDocument>> processingQueue;
 
         public MongoDBService(String serverAddress, String databaseName)
         {
@@ -96,7 +96,13 @@ namespace Analyzer.Common.Database.MongoDB
             //return true;
         }
 
-        private void AddToInner(String key, BsonDocument value)
+        /// <summary>
+        /// This function will insert the data into the right location based on the key value. Data is stored as a two dimensional array.
+        /// The first dimension is the collection name or index, the second represents that collections data.
+        /// </summary>
+        /// <param name="key">This represents the MongoDB collection name where to add the document</param>
+        /// <param name="value">The data to be inserted</param>
+        private bool AddToInner(String key, BsonDocument value)
         {
             List<BsonDocument> values = null;
             if (!this.dataWriteQueue.ContainsKey(key))
@@ -109,37 +115,49 @@ namespace Analyzer.Common.Database.MongoDB
             }
 
             values.Add(value);
+
+            return true;
         }
 
-        public void AddToWriteQueue<T>(String collectionName, T data)
+        public bool AddToWriteQueue<T>(String collectionName, T data)
         {
-            this.AddToInner(collectionName, data.ToBsonDocument());
+            return this.AddToInner(collectionName, data.ToBsonDocument());
             //this.datawriteQueue.add(data.ToBsonDocument());
         }
 
-        public void AddToWriteQueue<T>(SortedList<String, T> dataQueue)
+        public bool  AddToWriteQueue<T>(SortedList<String, T> dataQueue)
         {
+            bool result = true;
             foreach(var data in dataQueue)
-                this.AddToInner(data.Key, data.ToBsonDocument());
+                result &= this.AddToInner(data.Key, data.ToBsonDocument());
             //this.datawriteQueue.Enqueue(data.Value.ToBsonDocument());
+
+            return result;
         }
 
-        private void TransferQueueToDatabaseProcessingQueue()
+        /// <summary>
+        /// Transfers the queue and all its child element into the processing queue for processing and empties the main queue.
+        /// </summary>
+        private Dictionary<string, List<BsonDocument>> TransferQueueToDatabaseProcessingQueue()
         {
-            this.processingQueue = this.dataWriteQueue;
+            var tempQueueStorage = this.dataWriteQueue;
             this.dataWriteQueue = new Dictionary<string, List<BsonDocument>>();
+
+            return tempQueueStorage;
         }
 
-        public bool WriteToDatabaseAsync()
+        public bool WriteToDatabase()
         {
             bool databaseOperationStatus = false;
             this.isDatabaseWriteInProgress = true;
+            int queueSize = 0;
             try
             {
 
-                this.TransferQueueToDatabaseProcessingQueue();
-                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Starting to process queue at queue size: " + this.processingQueue.Count);
-                var keys = this.processingQueue.Keys;
+                var processingQueue = this.TransferQueueToDatabaseProcessingQueue();
+                queueSize = processingQueue.Count;
+                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Starting to process queue at queue size: " + processingQueue.Count);
+                var keys = processingQueue.Keys;
                 int dataInsertionCount = 0;
                 foreach (var key in keys)
                 {
@@ -149,21 +167,21 @@ namespace Analyzer.Common.Database.MongoDB
                         this.database.CreateCollectionAsync(key);
                     }
                     var collection = this.database.GetCollection<BsonDocument>(key);
-                    var documentsToInsert = from data in this.processingQueue where data.Key == key select data.Value;
+                    var documentsToInsert = from data in processingQueue where data.Key == key select data.Value;
 
                     collection.InsertManyAsync(documentsToInsert.FirstOrDefault());
 
                     Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Data written successfully to database. Documents queue size was: " + documentsToInsert.Count() + " Updated collection was: " + key);
                     dataInsertionCount += documentsToInsert.Count();
-                    Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Data processed: " + dataInsertionCount + "/" + this.processingQueue.Count);
+                    Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Data processed: " + dataInsertionCount + "/" + processingQueue.Count);
                 }
 
-                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Queue was processed and written to the database. Clearing queue at size: " + this.processingQueue.Count);
-                this.processingQueue.Clear();
+                Logger.ExceptionLoggingService.Instance.WriteDBWriteOperation("Queue was processed and written to the database. Clearing queue at size: " + processingQueue.Count);
+                processingQueue.Clear();
                 databaseOperationStatus = true;
             } catch(Exception ex)
             {
-                Logger.ExceptionLoggingService.Instance.WriteError("Error writing queue to database. Queue size: " + this.processingQueue.Count, ex);
+                Logger.ExceptionLoggingService.Instance.WriteError("Error writing queue to database. Queue size: " + queueSize, ex);
             }
             finally
             {
