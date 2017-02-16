@@ -44,6 +44,7 @@ namespace Analyzer.WebCrawler
         /// If this value is set to false the scraping process will stop.
         /// </summary>
         private bool isServiceScraping = false;
+        private bool isServiceScrapingNow = false;
         List<Source> webSources = new List<Source>();
         Timer scrapingIntervals = null;
 
@@ -98,8 +99,11 @@ namespace Analyzer.WebCrawler
         /// </summary>
         private void ScraperOperator()
         {
+
+
             try
             {
+
                 // Stop the timer until the current scraping iteration has finnished. No need to overlapp
                 this.scrapingIntervals.Enabled = false;
                 // Processing web pages based on RSS feeds
@@ -112,7 +116,7 @@ namespace Analyzer.WebCrawler
                 // Write the configuration file again, this is store when was the last time the scraping was performed. Any items that is older than the date it was processed is not going to be processed again.
                 Analyzer.Common.Configuration.ConfigurationManager.WriteConfiguredSources<Source>(this.webSources, ConfigurationManager.AppSettings.WebScrapingConfigurationFileLocation);
                 Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("END: web scraping iteration ended at: " + DateTime.Now);
-
+                this.isServiceScrapingNow = false;
                 //-------------------------------------------------------
             } catch(Exception ex)
             {
@@ -123,8 +127,7 @@ namespace Analyzer.WebCrawler
             }
             finally
             {
-                // Start the timer to wait for the next iteration
-                this.scrapingIntervals.Enabled = true;
+                
             }
         }
 
@@ -136,27 +139,30 @@ namespace Analyzer.WebCrawler
             // We don't want to cause problems for the site and do not want our function to be interupted.
             // NOTICE: This might not work if you are using a web service, this is presently designed for web URLs
             List<RSS.FeedItem> rssFeedsWebLocationsToProcess = new List<RSS.FeedItem>();
-            Task.Factory.StartNew(() =>
+           Task.Factory.StartNew(() =>
            {
                var rssFeeds = this.webSources.Where(o => o.CrawlerType == CrawlerType.RSS || o.CrawlerType == CrawlerType.RSSContentNoLinkFollowUp);
 
                foreach (var rssFeed in rssFeeds)
                {
-                   Task.Factory.StartNew(() => ProcessRSSFeed(rssFeed, rssFeedsWebLocationsToProcess), TaskCreationOptions.AttachedToParent);
+                   Task.Factory.StartNew(() => ProcessRSSFeed(rssFeed, rssFeedsWebLocationsToProcess), TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
                }
-           }, TaskCreationOptions.LongRunning);
+           }, TaskCreationOptions.LongRunning).ContinueWith(task =>
+           {
+               // Shuftle the location to get a randomized processing queue, helps making a more clear and reliable code and avoid being banned or causing harm to the scraped site
+               rssFeedsWebLocationsToProcess.Shuffle();
+               // Process the web location queue
+               foreach (var rssItem in rssFeedsWebLocationsToProcess)
+               {
+                   Task.Factory.StartNew(() => ProcessRSSItem(rssItem), TaskCreationOptions.AttachedToParent | TaskCreationOptions.LongRunning);
+               }
+           }).ContinueWith( task =>
+           { 
+               // Start the timer to wait for the next iteration
+               this.scrapingIntervals.Enabled = true;
+           });
 
-            // Create a new thread that is long running and processes multiple RSS items
-            Task.Factory.StartNew(() =>
-            {
-                // Shuftle the location to get a randomized processing queue, helps making a more clear and reliable code and avoid being banned or causing harm to the scraped site
-                rssFeedsWebLocationsToProcess.Shuffle();
-                // Process the web location queue
-                foreach (var rssItem in rssFeedsWebLocationsToProcess)
-                {
-                    Task.Factory.StartNew(() => ProcessRSSItem(rssItem), TaskCreationOptions.AttachedToParent);
-                }
-            }, TaskCreationOptions.LongRunning);
+            
             Analyzer.Common.Logger.ExceptionLoggingService.Instance.WriteWebScrapingInformation("ENDED: RSS Feed scraping iteration started at: " + DateTime.Now);
         }
 
